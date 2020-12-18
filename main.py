@@ -53,6 +53,10 @@ async def on_member_join(member):
 async def on_member_remove(member):
     print(f"{member} has left the server.")
 
+@client.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.CommandNotFound):
+        await ctx.send("Comando Inválido!")
 
 ###################################
 ###          BOT TASKS          ###
@@ -88,9 +92,11 @@ async def moeda(ctx):
 
     await ctx.send(
         f"Opa! Uma moedinha!\n" + 
-        "#################################################\n" +
-        f"# Vinícius está com {coins} {isPlural}\n" +
-        "#################################################\n"
+        "+---------\n" +
+        "|\n" +
+        f"|\tVinícius está com {coins} {isPlural}\n" +
+        "|\n"
+        "+---------\n"
     )
 
 @client.command()
@@ -103,9 +109,11 @@ async def roubar(ctx):
 
     await ctx.send(
         f"{prompt}\n" + 
-        "#################################################\n" +
-        f"# Vinícius está com {coins} {isPlural}\n" +
-        "#################################################\n"
+        "+---------\n" +
+        "|\n"
+        f"|\tVinícius está com {coins} {isPlural}\n" +
+        "|\n"
+        "+---------\n"
     )
 
 ###################################
