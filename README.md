@@ -42,5 +42,12 @@ $ docker build -t bot-image .
 
 ### 3) **Run**
 ```shell
-$ docker run -env-file=.env bot-image .
+$ docker run --env-file=.env bot-image
 ```
+---
+## *TODO*:
+
+- [ ] Implement Commands API in README
+- [ ] Implement --help command
+- [ ] Implement RPG-like class, with a Finite State Machine
+
