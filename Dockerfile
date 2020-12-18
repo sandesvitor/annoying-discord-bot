@@ -3,5 +3,5 @@ WORKDIR /code
 RUN pip install pipenv
 COPY Pipfile .
 RUN pipenv install
-COPY main.py .
+COPY src/main.py .
 CMD ["pipenv", "run", "python", "main.py"]
