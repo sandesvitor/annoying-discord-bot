@@ -5,9 +5,6 @@ import random
 import os
 import requests
 
-from Game import Game
-
-
 client = commands.Bot(command_prefix='--')
 status = cycle(
     [
@@ -127,8 +124,5 @@ async def apagar_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("Faltou especificar quantas linhas tu quer apagar, porra!")
 
-game = Game()
-game.print_state()
-game.change_state("LEVEL_1")
-game.print_state()
-#client.run(os.getenv("TOKEN"))
+
+client.run(os.getenv("TOKEN"))
