@@ -7,7 +7,7 @@ verify_ssl = true
 
 [packages]
 pylint = "*"
-"discord.py" = "*"
+"discord.py" = {extras = ["voice"], version = "*"}
 requests = "*"
 
 [requires]
