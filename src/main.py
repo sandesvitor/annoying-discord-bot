@@ -4,6 +4,7 @@ from itertools import cycle
 import random
 import os
 import requests
+import json
 
 client = commands.Bot(command_prefix='--')
 status = cycle(
@@ -28,8 +29,10 @@ coins = 0
 
 def get_random_insult():
     response = requests.get(
-        r"https://insult.mattbas.org/api/insult")
-    return response.text
+        r'http://xinga-me.appspot.com/api')
+    json_data = json.loads(response.text)
+    quote = "Aqui vai: " + json_data["xingamento"] + "!\n"
+    return quote
 
 def post_annoying_song():
     pass
@@ -75,7 +78,7 @@ async def ping(ctx):
     await ctx.send(f"Latência: {round(client.latency * 1000)}ms")
 
 @client.command()
-async def inspirar(ctx):
+async def amar(ctx):
     await ctx.send(get_random_insult())
 
 @client.command()
@@ -84,18 +87,18 @@ async def apagar(ctx, amount : int):
     await ctx.channel.purge(limit=amount)
 
 @client.command()
-async def moeda(ctx):
+async def pagar(ctx):
     global coins
     coins += 1
     isPlural = "moedas" if coins > 1 else "moeda" 
 
     await ctx.send(
         f"Opa! Uma moedinha!\n" + 
-        "+---------\n" +
+        "+----------------->\n" +
         "|\n" +
         f"|\tVinícius está com {coins} {isPlural}\n" +
         "|\n"
-        "+---------\n"
+        "+----------------->\n"
     )
 
 @client.command()
@@ -108,11 +111,11 @@ async def roubar(ctx):
 
     await ctx.send(
         f"{prompt}\n" + 
-        "+---------\n" +
+        "+----------------->\n" +
         "|\n"
         f"|\tVinícius está com {coins} {isPlural}\n" +
         "|\n"
-        "+---------\n"
+        "+----------------->\n"
     )
 
 ###################################
