@@ -9,6 +9,7 @@ verify_ssl = true
 pylint = "*"
 "discord.py" = {extras = ["voice"], version = "*"}
 requests = "*"
+selenium = "*"
 
 [requires]
 python_version = "3.8"
