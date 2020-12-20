@@ -2,15 +2,14 @@ import discord
 from discord.ext import commands, tasks
 from discord.ext.commands import Bot
 from discord.voice_client import VoiceClient
-import asyncio
 from itertools import cycle
 import random
 import os
-import requests
-import json
 import time
 
+from deep_translator import GoogleTranslator
 import Scrapper
+import Rest
 
 client = commands.Bot(command_prefix='--')
 status = cycle(
@@ -35,20 +34,6 @@ shut_ups = [
 coins = 0
 
 
-insults_url = r'http://xinga-me.appspot.com/api'
-
-
-###################################
-###        MAIN FUNCTIONS       ###
-###################################
-
-def get_random_insult():
-    response = requests.get(insults_url)
-    json_data = json.loads(response.text)
-    quote = "Aqui vai: " + json_data["xingamento"] + "!\n"
-    return quote
-
-
 ###################################
 ###          BOT EVENTS         ###
 ###################################
@@ -58,26 +43,11 @@ async def on_ready():
     change_status.start()
     print("Logged in as {0}".format(client.user))
 
-@client.event
-async def on_member_join(member):
-    print(f"{member} has join the server.")
-
-@client.event
-async def on_member_remove(member):
-    print(f"{member} has left the server.")
 
 @client.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
         await ctx.send("Comando Inválido!")
-
-# @client.event
-# async def on_message(message):
-#     if (message.author == client.user):
-#         return
-    
-#     shut_up_index = random.randint(0, (len(shut_ups) - 1))
-#     await message.channel.send("{0}, {1}".format(message.author, shut_ups[shut_up_index]), tts=True)
 
 
 ###################################
@@ -99,8 +69,16 @@ async def ping(ctx):
 
 
 @client.command()
+async def membros(ctx):
+    print(ctx.author)
+    print(ctx.channel)
+
+
+@client.command()
 async def amar(ctx):
-    await ctx.send(get_random_insult(), tts=True)
+    insult_en = Rest.get_random_insult()
+    insult_pt = GoogleTranslator(source='en', target='pt').translate(insult_en)
+    await ctx.send(insult_pt, tts=True)
 
 
 @client.command()
@@ -168,7 +146,9 @@ async def vaza(ctx):
 
 @client.command(pass_content=True)
 async def cancelado(ctx, keep_going=True):
-    await ctx.send(Scrapper.get_apology(), tts=True)
+    apology_en = Scrapper.get_apology()
+    apology_pt = GoogleTranslator(source='en', target='pt').translate(apology_en)
+    await ctx.send(apology_pt, tts=True)
 
 
 ###################################
