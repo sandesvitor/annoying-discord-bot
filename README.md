@@ -48,6 +48,6 @@ $ docker run --env-file=.env bot-image
 ## *TODO*:
 - [ ] Implement geckodriver path in Dockerfile (firefox selenium webdriver)
 - [ ] Implement Commands API in README
-- [ ] Implement --help command
+- [x] Implement --help command
 - [ ] Implement RPG-like class, with a Finite State Machine
 

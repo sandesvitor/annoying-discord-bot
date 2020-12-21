@@ -12,6 +12,8 @@ import Scrapper
 import Rest
 
 client = commands.Bot(command_prefix='--')
+client.remove_command('help')
+
 status = cycle(
     [
         'Jogo da Vida', 
@@ -23,13 +25,6 @@ status = cycle(
         'Biriba'
     ]
 )
-
-shut_ups = [
-    "por favor, cala a boca.",
-    "sério, não aguento mais!",
-    "cale-se, maldição!",
-    "morra, seu verme falador..."
-]
 
 coins = 0
 
@@ -63,6 +58,21 @@ async def change_status():
 ###         BOT COMMANDS        ###
 ###################################
 
+@client.command(pass_context=True)
+async def ajuda(ctx):
+    embed = discord.Embed(
+        colour = discord.Colour.red()
+    )
+    embed.set_author(name="Me Ajuda, Vinícius!")
+    embed.add_field(name='--ping', value='Retorna a latência entre o comando e a resposta de Vinícius', inline=False)
+    embed.add_field(name='--amar', value='Faz Vinícius lhe enviar uma mensagem de amor =)', inline=False)
+    embed.add_field(name='--entra', value='Vinícius imediatamente entra no canal ao qual você pertence!', inline=False)
+    embed.add_field(name='--vaza', value='Tadinho do Vinícius, expulsar-lhe-há de tal santuário?', inline=False)
+    embed.add_field(name='--cancelado', value='As Relações Públicas de Vinícius preparam-lhe um pronunciamento público...', inline=False)
+
+    await ctx.send(embed=embed)
+
+
 @client.command()
 async def ping(ctx):
     await ctx.send(f"Latência: {round(client.latency * 1000)}ms", tts=True)
@@ -76,8 +86,18 @@ async def membros(ctx):
 
 @client.command()
 async def amar(ctx):
+    insult_url = Rest.insults_url
     insult_en = Rest.get_random_insult()
     insult_pt = GoogleTranslator(source='en', target='pt').translate(insult_en)
+    
+    channel = ctx.author.voice.channel
+    print("---------------------------------------------------")
+    print("Vinícius will search the web for a random insult:")
+    print("URL: {0}".format(insult_url))
+    print("Channel Name: {0}\nChannel Id: {1}".format(channel.name, channel.id))
+    print("Commanded by user [{0}] of id [{1}]".format(ctx.author.name, ctx.author.id))
+    print("---------------------------------------------------\n")
+    
     await ctx.send(insult_pt, tts=True)
 
 
@@ -146,8 +166,17 @@ async def vaza(ctx):
 
 @client.command(pass_content=True)
 async def cancelado(ctx, keep_going=True):
+    apology_url = Scrapper.apology_url
     apology_en = Scrapper.get_apology()
     apology_pt = GoogleTranslator(source='en', target='pt').translate(apology_en)
+
+    print("---------------------------------------------------")
+    print("Vinícius will search the web for a random PR apology:")
+    print("URL: {0}".format(apology_url))
+    print("Channel Name: {0}\nChannel Id: {1}".format(channel.name, channel.id))
+    print("Commanded by user [{0}] of id [{1}]".format(ctx.author.name, ctx.author.id))
+    print("---------------------------------------------------\n")
+
     await ctx.send(apology_pt, tts=True)
 
 
