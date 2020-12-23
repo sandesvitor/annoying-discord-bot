@@ -4,4 +4,5 @@ RUN pip install pipenv
 COPY Pipfile .
 RUN pipenv install
 COPY src/main.py .
+COPY /usr/bin/geckodriver .
 CMD ["pipenv", "run", "python", "main.py"]

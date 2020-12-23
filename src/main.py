@@ -78,11 +78,6 @@ async def ping(ctx):
     await ctx.send(f"Latência: {round(client.latency * 1000)}ms", tts=True)
 
 
-@client.command()
-async def membros(ctx):
-    print(ctx.author)
-    print(ctx.channel)
-
 
 @client.command()
 async def amar(ctx):
@@ -90,13 +85,13 @@ async def amar(ctx):
     insult_en = Rest.get_random_insult()
     insult_pt = GoogleTranslator(source='en', target='pt').translate(insult_en)
     
-    channel = ctx.author.voice.channel
-    print("---------------------------------------------------")
+    channel_text = ctx.channel
+    print("-----------------------------------------------------")
     print("Vinícius will search the web for a random insult:")
     print("URL: {0}".format(insult_url))
-    print("Channel Name: {0}\nChannel Id: {1}".format(channel.name, channel.id))
+    print("Text Channel Name: {0}\nText Channel Id: {1}".format(channel_text.name, channel_text.id))
     print("Commanded by user [{0}] of id [{1}]".format(ctx.author.name, ctx.author.id))
-    print("---------------------------------------------------\n")
+    print("-----------------------------------------------------\n")
     
     await ctx.send(insult_pt, tts=True)
 
@@ -107,60 +102,44 @@ async def apagar(ctx, amount : int):
     await ctx.channel.purge(limit=amount)
 
 
-@client.command()
-async def pagar(ctx, amount=1):
-    global coins
-    coins += amount
-    isPlural = "moedas" if coins > 1 else "moeda" 
-
-    await ctx.send(
-        f"Opa! Uma moedinha!\n" + 
-        "+----------------->\n" +
-        "|\n" +
-        f"|\tVinícius está com {coins} {isPlural}\n" +
-        "|\n"
-        "+----------------->\n"
-    )
-
-
-@client.command()
-async def roubar(ctx, amount=1):
-    global coins
-    coins -= amount
-    coins = 0 if coins <= 0 else coins
-    isPlural = "moedas" if coins > 1 else "moeda" 
-    prompt = f"Por que me roubastes!?" if coins > 0 else "Minha carteira já tá vazia, merda..."
-
-    await ctx.send(
-        f"{prompt}\n" + 
-        "+----------------->\n" +
-        "|\n"
-        f"|\tVinícius está com {coins} {isPlural}\n" +
-        "|\n"
-        "+----------------->\n"
-    )
-
 
 @client.command(pass_content=True)
 async def entra(ctx):
-    channel = ctx.author.voice.channel
-    print("---------------------------------------------------")
+    channel_voice = ctx.author.voice.channel
+    channel_text = ctx.channel
+    print("-----------------------------------------------------")
     print("Vinícius is trying to enter voice channel:")
-    print("Channel Name: {0}\nChannel Id: {1}".format(channel.name, channel.id))
+    print("Voice Channel Name: {0}\nVoice Channel Id: {1}".format(channel_voice.name, channel_voice.id))
     print("Commanded by user [{0}] of id [{1}]".format(ctx.author.name, ctx.author.id))
-    print("---------------------------------------------------\n")
-    await channel.connect()
+    print("-----------------------------------------------------\n")
+    await channel_voice.connect()
+
+    embed = discord.Embed(
+        colour = discord.Colour.red()
+    )
+    embed.set_author(name="Tô online, seus doentes!")
+    embed.add_field(name='--ping', value='Retorna a latência entre o comando e a resposta de Vinícius', inline=False)
+    embed.add_field(name='--amar', value='Faz Vinícius lhe enviar uma mensagem de amor =)', inline=False)
+    embed.add_field(name='--entra', value='Vinícius imediatamente entra no canal ao qual você pertence!', inline=False)
+    embed.add_field(name='--vaza', value='Tadinho do Vinícius, expulsar-lhe-há de tal santuário?', inline=False)
+    embed.add_field(name='--cancelado', value='As Relações Públicas de Vinícius preparam-lhe um pronunciamento público...', inline=False)
+    embed.set_footer(text="Um cara complicado")
+    embed.set_image(url="https://scontent.fsdu5-1.fna.fbcdn.net/v/t1.0-9/48419398_1694983030605876_7867959136527319040_n.jpg?_nc_cat=107&ccb=2&_nc_sid=9267fe&_nc_ohc=A-Awwslsm8QAX8auX1z&_nc_ht=scontent.fsdu5-1.fna&oh=de3b60a11c4f36ea28a19a0b2531ac46&oe=600743CD")
+
+    await channel_text.send(embed=embed)
 
 
 @client.command(pass_content=True)
 async def vaza(ctx):
-    channel = ctx.author.voice.channel
-    print("---------------------------------------------------")
+    channel_voice = ctx.author.voice.channel
+    channel_text = ctx.channel
+    print("-----------------------------------------------------")
     print("Vinícius is trying to leave voice channel:")
-    print("Channel Name: {0}\nChannel Id: {1}".format(channel.name, channel.id))
+    print("Voice Channel Name: {0}\nVoice Channel Id: {1}".format(channel_voice.name, channel_voice.id))
     print("Commanded by user [{0}] of id [{1}]".format(ctx.author.name, ctx.author.id))
-    print("---------------------------------------------------\n")
+    print("-----------------------------------------------------\n")
     server = ctx.message.guild.voice_client
+    await channel_text.send('Caguei pra vocês...')
     await server.disconnect()
 
 
@@ -173,11 +152,27 @@ async def cancelado(ctx, keep_going=True):
     print("---------------------------------------------------")
     print("Vinícius will search the web for a random PR apology:")
     print("URL: {0}".format(apology_url))
-    print("Channel Name: {0}\nChannel Id: {1}".format(channel.name, channel.id))
+    print("Text Channel Name: {0}\nText Channel Id: {1}".format(ctx.channel.name, ctx.channel.id))
     print("Commanded by user [{0}] of id [{1}]".format(ctx.author.name, ctx.author.id))
     print("---------------------------------------------------\n")
 
     await ctx.send(apology_pt, tts=True)
+
+
+@client.command()
+async def calma(ctx):
+    channel_text = ctx.channel
+
+    print("---------------------------------------------------")
+    print("Vinícius will send am image to channel:")
+    print("PATH: {0}".format('./assets/calma_meu_guerreito.jpg'))
+    print("Text Channel Name: {0}\nText Channel Id: {1}".format(channel_text.name, channel_text.id))
+    print("Commanded by user [{0}] of id [{1}]".format(ctx.author.name, ctx.author.id))
+    print("---------------------------------------------------\n")
+
+    embed = discord.Embed(title="TÔ ONLINE!")
+    embed.add_field(name="Nome", value="Vinícius", inline=False)
+    await channel_text.send('Hello, Friends!')
 
 
 ###################################
