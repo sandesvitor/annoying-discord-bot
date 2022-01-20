@@ -42,7 +42,7 @@ jobs:
         working-directory: aws-infrastructure
 
       - name: Terraform Plan
-        run: TF_vpc_id=$VPC_ID TF_key_name=$EC2_SSH_KEY_NAME TF_subnet_id=$SUBNET_ID terraform plan
+        run: terraform plan -var="vpc_id=$VPC_ID" -var="key_name=$EC2_SSH_KEY_NAME" -var="subnet_id=$SUBNET_ID"
         working-directory: aws-infrastructure
 
   apply:
@@ -73,5 +73,5 @@ jobs:
         working-directory: aws-infrastructure
       
       - name: Terraform Apply
-        run: TF_vpc_id=$VPC_ID TF_key_name=$EC2_SSH_KEY_NAME TF_subnet_id=$SUBNET_ID terraform apply -auto-approve
+        run: terraform apply -var="vpc_id=$VPC_ID" -var="key_name=$EC2_SSH_KEY_NAME" -var="subnet_id=$SUBNET_ID" -auto-approve
         working-directory: aws-infrastructure
