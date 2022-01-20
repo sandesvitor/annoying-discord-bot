@@ -5,6 +5,7 @@ on:
       - main
     paths:
       - aws-infrastructure/*
+  workflow_dispatch:
 
 defaults:
   run:

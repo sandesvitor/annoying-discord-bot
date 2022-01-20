@@ -5,6 +5,7 @@ on:
       - main
     paths:
       - bot/*
+  workflow_dispatch:
 
 defaults:
   run:
