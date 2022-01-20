@@ -44,7 +44,7 @@ jobs:
   apply:
     name: Terraform Apply
     runs-on: ubuntu
-    environmet:
+    environment:
       name: infra
     steps:
       - name: Checkout
