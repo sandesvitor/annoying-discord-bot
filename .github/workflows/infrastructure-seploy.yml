@@ -43,6 +43,7 @@ jobs:
 
   apply:
     name: Terraform Apply
+    needs: [plan]
     runs-on: ubuntu
     environment:
       name: infra
