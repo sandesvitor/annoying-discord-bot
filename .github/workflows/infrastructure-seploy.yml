@@ -1,0 +1,67 @@
+name: infrastructure-deploy
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - aws-infrastructure/*
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  EC2_SSH_KEY_NAME: ${{ secrets.EC2_SSH_KEY_NAME }}
+  VPC_ID: ${{ secrets.VPC_ID }}
+  SUBNET_ID: ${{ secrets.SUBNET_ID }}
+
+jobs:
+  plan:
+    name: Terraform Plan
+    runs-on: ubuntu
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 0.14.8
+          terraform_wraper: false
+
+      - name: Terraform Plan
+        run: TF_vpc_id=$VPC_ID TF_key_name=$EC2_SSH_KEY_NAME TF_subnet_id=$SUBNET_ID terraform plan
+        working-directory: aws-infrastructure
+
+  apply:
+    name: Terraform Apply
+    runs-on: ubuntu
+    environmet:
+      name: infra
+    steps:
+      - name: Checkout
+          uses: actions/checkout@master
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 0.14.8
+          terraform_wraper: false
+
+      - name: Terraform Apply
+        run: TF_vpc_id=$VPC_ID TF_key_name=$EC2_SSH_KEY_NAME TF_subnet_id=$SUBNET_ID terraform apply -auto-approve
+        working-directory: aws-infrastructure

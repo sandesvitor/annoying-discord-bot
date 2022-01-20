@@ -1,0 +1,36 @@
+name: bot-deploy
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - bot/*
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  EC2_SSH_KEY_NAME: ${{ secrets.EC2_SSH_KEY_NAME }}
+  VPC_ID: ${{ secrets.VPC_ID }}
+  SUBNET_ID: ${{ secrets.SUBNET_ID }}
+
+jobs:
+  docker-build-and-push:
+    name: Docker Build and Push
+    runs-on: ubuntu
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+  deploy:
+    name: Deploy
+    runs-on: ubuntu
+    environmet:
+      name: bot
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Test
+        run: echo test
