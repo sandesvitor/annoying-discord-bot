@@ -34,7 +34,7 @@ resource "aws_security_group_rule" "ingres_ssh" {
 #-------------------------------------------------------------------------------------------
 
 resource "aws_instance" "this" {
-  ami                    = "amzn2-ami-kernel-5.10-hvm-2.0.20211223.0-x86_64-gp2"
+  ami                    = "ami-06078a297452ba5aa"
   instance_type          = "t2.micro"
   key_name               = var.key_name
   vpc_security_group_ids = [aws_security_group.security_group.id]
