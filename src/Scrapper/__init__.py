@@ -5,7 +5,9 @@ from time import sleep
 
 options = Options()
 options.headless = True
-firefox = webdriver.Firefox(options=options)
+options.executable_path = "/usr/local/bin/geckodriver"
+# options.binary_path = "/usr/local/bin/geckodriver"
+firefox = webdriver.Firefox(options=options, executable_path="/usr/local/bin/geckodriver")
 
 
 apology_url = r'https://apologygenerator.com/'

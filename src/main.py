@@ -8,8 +8,8 @@ import os
 import time
 
 from deep_translator import GoogleTranslator
-import Scrapper
 import Rest
+import Scrapper
 
 client = commands.Bot(command_prefix='--')
 client.remove_command('help')
@@ -183,7 +183,5 @@ async def calma(ctx):
 async def apagar_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("Faltou especificar quantas linhas tu quer apagar, porra!")
-
-
 
 client.run(os.getenv("TOKEN"))
