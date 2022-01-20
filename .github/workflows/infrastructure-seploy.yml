@@ -35,7 +35,7 @@ jobs:
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 0.14.8
-          terraform_wraper: false
+          terraform_wrapper: false
 
       - name: Terraform Init
         run: terraform init
@@ -66,7 +66,7 @@ jobs:
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 0.14.8
-          terraform_wraper: false
+          terraform_wrapper: false
 
       - name: Terraform Init
         run: terraform init
